@@ -1,8 +1,8 @@
 export default class Platform {
   constructor(posX, canvas) {
     this.canvas = canvas;
-    this.width = Math.random() * 80 + 10;
-    this.height = 200;
+    this.width = Math.random() * 200 + 20;
+    this.height = 500;
     this.color = "black";
 
     this.position = {
@@ -34,14 +34,17 @@ export default class Platform {
 }
 
 const config = {
-  minGab: 40, // Minimum gap between platforms
-  maxGab: 120, // Maximum gap between platforms
+  minGab: 80, // Minimum gap between platforms
+  maxGab: 220, // Maximum gap between platforms
 };
 
 export const platforms = [];
 let startPosX = 200; // Starting X position
 const canvas = document.getElementById("gameCanvas");
-platforms.push(new Platform(startPosX, canvas));
+const firstPlatform = new Platform(startPosX, canvas);
+platforms.push(firstPlatform);
+const secondPosition = firstPlatform.rightEdge + config.minGab;
+platforms.push(new Platform(secondPosition + 100, canvas));
 
 function addPlatform() {
   const lastPlatform = platforms[platforms.length - 1];

@@ -3,7 +3,7 @@ import platform from "./platform.js";
 export default class Stick {
   constructor(platform) {
     this.platform = platform;
-    this.width = 5;
+    this.width = 3;
     this.height = 0;
     this.speed = 3;
     this.position = {
@@ -19,7 +19,23 @@ export default class Stick {
     ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
   }
 
-  rotatStick() {}
+  rotateStick(ctx) {
+    if (!this.isPressing) {
+      ctx.clearRect(
+        this.position.x,
+        this.position.y,
+        this.width + 1,
+        this.height
+      );
+      ctx.save();
+
+      ctx.translate(this.position.x, this.position.y + this.height);
+      ctx.rotate(Math.PI / 2);
+      ctx.fillStyle = "this.color";
+      ctx.fillRect(-this.width, -this.height, this.width, this.height);
+      ctx.restore();
+    }
+  }
 
   increaseHeight(ctx) {
     if (this.isPressing) {

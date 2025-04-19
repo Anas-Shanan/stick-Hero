@@ -38,9 +38,9 @@ async function main() {
 
   function heroDraw() {
     ctx.fillStyle = "black";
-    ctx.fillRect(120, 858, 20, 20);
+    ctx.fillRect(250, canvas.height - 530, 25, 25);
     // draw first platform
-    ctx.fillRect(100, canvas.height - 200, 50, 220);
+    /* ctx.fillRect(100, canvas.height - 500, 50, 500); */
   }
   /*  // Add platforms on key press
   document.addEventListener("keydown", (event) => {
@@ -49,18 +49,26 @@ async function main() {
     }
   }); */
   const sticks = [];
+
+  const firstStick = new Stick(platforms[platforms.length - 1]);
+  console.log("last platform", platforms[platforms.length - 1]);
+  console.log(`first stick,`, firstStick);
+  console.log("sticks array", sticks);
+
   window.addEventListener("mousedown", (event) => {
-    console.log("last platform", platforms[platforms.length - 1]);
-    sticks.push(new Stick(platforms[platforms.length - 1]));
+    sticks.push(new Stick(platforms[platforms.length - 2]));
     console.log("sticks array", sticks);
     let lastStick = sticks[sticks.length - 1];
     lastStick.isPressing = true;
     lastStick.increaseHeight(ctx);
-    console.log(`click`, event);
+    /* console.log(`click`, event); */
   });
   window.addEventListener("mouseup", (event) => {
     let lastStick = sticks[sticks.length - 1];
     lastStick.isPressing = false;
+    lastStick.rotateStick(ctx);
+
+    /* drawBackground(ctx, canvas); */
   });
 
   function draw() {
@@ -68,26 +76,12 @@ async function main() {
     drawBackground(ctx, canvas);
 
     platforms.forEach((platform) => platform.drawPlatform(ctx));
-    sticks.forEach((stick) => stick.increaseHeight(ctx));
+    sticks.forEach((stick) => {
+      stick.increaseHeight(ctx);
+      stick.drawStick(ctx);
+      stick.rotateStick(ctx);
+    });
 
-    ////////////////////////// test ////////////
-
-    /*     ctx.beginPath();
-    for (let y = 100; y < 1000; y += 10) {
-      ctx.moveTo(600, y);
-      ctx.lineTo(90, y);
-    }
-    ctx.stroke();
-    ctx.fillStyle = " green";
-    ctx.beginPath();
-    ctx.moveTo(100, 290);
-    // control=(60,10) goal=(90,90)
-    ctx.quadraticCurveTo(460, 100, 90, 90);
-    ctx.lineTo(360, 50);
-    ctx.closePath();
-    ctx.stroke(); */
-
-    ///////////////////////////////////////////////////
     heroDraw();
   }
 
