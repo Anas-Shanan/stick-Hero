@@ -1,89 +1,96 @@
-import platform from "./platform.js";
 import { platforms } from "./platform.js";
+
 import Stick from "./stick.js";
+import { animateHero, moving, stop } from "./Hero.js";
 
 const container = document.querySelector(".container");
-console.log(container);
+const bgCanvas = document.getElementById("bgCanvas");
+const canvas = document.getElementById("gameCanvas");
+const bgCtx = bgCanvas.getContext("2d");
+const ctx = canvas.getContext("2d");
+ctx.imageSmoothingEnabled = false;
 
-new ResizeObserver(() => {
-  document.documentElement.style.setProperty(
-    "--scale",
-    Math.min(
-      container.parentElement.offsetWidth / container.offsetWidth,
-      container.parentElement.offsetHeight / container.offsetHeight
-    )
+// drawBackground at the top to be accessible always
+function drawBackground() {
+  let gradient = bgCtx.createLinearGradient(0, 0, 0, bgCanvas.height);
+  gradient.addColorStop(0, "#87ceeb");
+  gradient.addColorStop(1, "#ffffff");
+
+  bgCtx.fillStyle = gradient;
+  bgCtx.fillRect(0, 0, bgCanvas.width, bgCanvas.height);
+}
+
+// scaling
+const resizeObserver = new ResizeObserver(() => {
+  const scale = Math.min(
+    container.parentElement.offsetWidth / container.offsetWidth,
+    container.parentElement.offsetHeight / container.offsetHeight
   );
-}).observe(container.parentElement);
+  document.documentElement.style.setProperty("--scale", scale);
+});
+resizeObserver.observe(container.parentElement);
+
 async function main() {
-  const canvas = document.getElementById("gameCanvas");
-  const ctx = canvas.getContext("2d");
-
-  ctx.imageSmoothingEnabled = false;
-
-  ctx.fillStyle = "black";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  console.log(canvas);
-
-  // background
-  function drawBackground(ctx, canvas) {
-    let gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-    gradient.addColorStop(0, "#87ceeb"); // Sky blue
-    gradient.addColorStop(1, "#ffffff"); // White
-
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "black";
-    ctx.fillRect(0, canvas.height - 1, canvas.width, 1);
+  // Initialize canvases
+  function initCanvases() {
+    bgCanvas.width = canvas.width = container.offsetWidth;
+    bgCanvas.height = canvas.height = container.offsetHeight;
+    drawBackground();
   }
 
-  function heroDraw() {
-    ctx.fillStyle = "black";
-    ctx.fillRect(250, canvas.height - 530, 25, 25);
-    // draw first platform
-    /* ctx.fillRect(100, canvas.height - 500, 50, 500); */
-  }
-  /*  // Add platforms on key press
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "ArrowRight") {
-      addPlatform();
-    }
-  }); */
   const sticks = [];
-
   const firstStick = new Stick(platforms[platforms.length - 1]);
-  console.log("last platform", platforms[platforms.length - 1]);
-  console.log(`first stick,`, firstStick);
-  console.log("sticks array", sticks);
 
   window.addEventListener("mousedown", (event) => {
     sticks.push(new Stick(platforms[platforms.length - 2]));
-    console.log("sticks array", sticks);
     let lastStick = sticks[sticks.length - 1];
     lastStick.isPressing = true;
-    lastStick.increaseHeight(ctx);
-    /* console.log(`click`, event); */
   });
+
   window.addEventListener("mouseup", (event) => {
     let lastStick = sticks[sticks.length - 1];
     lastStick.isPressing = false;
-    lastStick.rotateStick(ctx);
-
-    /* drawBackground(ctx, canvas); */
   });
 
-  function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawBackground(ctx, canvas);
+  ////////////////////// hero /////////////7
 
+  /* const spriteSheet = new Image();
+  spriteSheet.src = "../assets/imgs/spritesheet6.png";
+  spriteSheet.onload = () => {
+    console.log("Image loaded");
+    gameloop();
+  };
+ */
+
+  ///////////////////////////////////////////////////////////////
+  function draw() {
+    // Clear only game canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draw platforms
     platforms.forEach((platform) => platform.drawPlatform(ctx));
+
+    // stop Hero
+
+    // Draw sticks
     sticks.forEach((stick) => {
-      stick.increaseHeight(ctx);
+      if (stick.isPressing) {
+        stick.increaseHeight(ctx);
+      }
       stick.drawStick(ctx);
       stick.rotateStick(ctx);
-    });
 
-    heroDraw();
+      if (stick.collision) {
+        moving();
+        stick.collision = false;
+      }
+    });
+    stop();
+    animateHero(ctx);
   }
+
+  // Initialize and draw background immediately
+  initCanvases();
 
   function gameloop() {
     draw();

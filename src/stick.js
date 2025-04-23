@@ -1,5 +1,3 @@
-import platform from "./platform.js";
-
 export default class Stick {
   constructor(platform) {
     this.platform = platform;
@@ -13,6 +11,7 @@ export default class Stick {
 
     this.color = "black";
     this.isPressing = false;
+    this.collision = false;
   }
   drawStick(ctx) {
     ctx.fillStyle = this.color;
@@ -22,10 +21,12 @@ export default class Stick {
   rotateStick(ctx) {
     if (!this.isPressing) {
       ctx.clearRect(
-        this.position.x,
+        this.position.x - 1,
         this.position.y,
-        this.width + 1,
+        this.width + 2,
         this.height
+        /* Math.max(this.width, this.height),
+        Math.max(this.width, this.height) */
       );
       ctx.save();
 
@@ -34,6 +35,7 @@ export default class Stick {
       ctx.fillStyle = "this.color";
       ctx.fillRect(-this.width, -this.height, this.width, this.height);
       ctx.restore();
+      this.collision = true;
     }
   }
 
