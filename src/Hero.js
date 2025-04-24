@@ -1,4 +1,4 @@
-import platform from "./platform.js";
+import platform, { addPlatform } from "./platform.js";
 import { platforms } from "./platform.js";
 
 const spriteSheet = new Image();
@@ -17,22 +17,22 @@ let y = 0;
 let yCanvas = 525;
 const speed = 4;
 let isMoving = false;
-const fallSpeed = 10;
+const fallSpeed = 15;
 
 /* if (totalFrames % 10 === 0) {
     currentFrame = currentFrame < 5 ? currentFrame + 1 : 0;
   } */
 
-export function moving(distance) {
-  if (x + 60 >= distance) {
-    isMoving = false;
-    currentFrame = 0;
-  } else {
-    isMoving = true;
+export function moving(targetDistance) {
+  if (isMoving) {
+    if (x + 60 >= targetDistance) {
+      isMoving = false;
+      currentFrame = 0;
+    }
   }
 }
-function fall(distance) {
-  if (x >= distance) {
+function fall(targetDistance) {
+  if (x >= targetDistance) {
     currentFrame = 0;
     isMoving = false;
     yCanvas += fallSpeed;
@@ -45,7 +45,7 @@ export function stop(sticks) {
   }
 
   const currentPlatform = platforms[platforms.length - 2];
-  const nextPlatform = platforms[platforms.length - 1];
+  /* const nextPlatform = platforms[platforms.length - 1]; */
   const lastStick = sticks[sticks.length - 1];
   if (!lastStick) {
     console.error("Last stick is undefined.");
@@ -63,32 +63,32 @@ export function stop(sticks) {
       
     ); */ /* console.log(`Hero X: ${x}`);
     console.log(`Stick End X: ${stickEndX}`); */
+    const nextPlatform = platforms[platforms.length - 1];
     if (
       stickEndX >= nextPlatform.position.x &&
       stickEndX <= nextPlatform.position.x + nextPlatform.width
     ) {
       isMoving = true;
-      let distance = platforms[platforms.length - 1].rightEdge;
-      moving(distance);
-      lastStick.resetCollision();
-      console.log(`collision`, lastStick.collision);
-    }
-    if (stickEndX <= nextPlatform.position.x) {
-      console.log(`collision`, lastStick.collision);
-
-      moving(stickEndX + 60);
+      let targetDistance = nextPlatform.rightEdge;
+      moving(targetDistance);
+    } else if (stickEndX <= nextPlatform.position.x) {
+      let targetDistance = stickEndX + 60;
+      isMoving = true;
       fall(stickEndX);
 
       lastStick.resetCollision();
       console.log(`collision`, lastStick.collision);
-    }
-    if (stickEndX >= nextPlatform.rightEdge) {
-      moving(stickEndX + 60);
+    } else if (stickEndX >= nextPlatform.rightEdge) {
+      let targetDistance = stickEndX + 60;
+      isMoving = true;
       fall(stickEndX);
       console.log(`Hero is moving beyond the next platform.`);
       lastStick.resetCollision();
     }
-  }
+  } /* else {
+    isMoving = false;
+    console.log("Collision is false. Hero cannot move further.");
+  } */
 }
 
 export function animateHero(ctx) {
