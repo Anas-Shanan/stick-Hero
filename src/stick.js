@@ -1,21 +1,33 @@
+const stickConfig = {
+  width: 4,
+  growSpeed: 3,
+  color: "black",
+  rotationSpeed: 1,
+};
+
 export default class Stick {
   constructor(platform) {
     this.platform = platform;
-    this.width = 3;
     this.height = 0;
-    this.speed = 3;
     this.position = {
-      x: platform.position.x + platform.width - this.width,
+      x: platform.position.x + platform.width - stickConfig.width,
       y: platform.position.y,
     };
 
-    this.color = "black";
     this.isPressing = false;
     this.collision = false;
   }
   drawStick(ctx) {
-    ctx.fillStyle = this.color;
-    ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
+    ctx.fillStyle = stickConfig.color;
+    ctx.fillRect(
+      this.position.x,
+      this.position.y,
+      stickConfig.width,
+      this.height
+    );
+  }
+  resetCollision() {
+    this.collision = false;
   }
 
   rotateStick(ctx) {
@@ -23,26 +35,30 @@ export default class Stick {
       ctx.clearRect(
         this.position.x - 1,
         this.position.y,
-        this.width + 2,
+        stickConfig.width + 2,
         this.height
-        /* Math.max(this.width, this.height),
-        Math.max(this.width, this.height) */
       );
       ctx.save();
 
       ctx.translate(this.position.x, this.position.y + this.height);
-      ctx.rotate(Math.PI / 2);
-      ctx.fillStyle = "this.color";
-      ctx.fillRect(-this.width, -this.height, this.width, this.height);
+      ctx.rotate((stickConfig.rotationSpeed * Math.PI) / 2);
+      ctx.fillStyle = stickConfig.color;
+      ctx.fillRect(
+        -stickConfig.width,
+        -this.height,
+        stickConfig.width,
+        this.height
+      );
       ctx.restore();
       this.collision = true;
     }
+    /* return (this.collision = true); */
   }
 
   increaseHeight(ctx) {
     if (this.isPressing) {
-      this.height += 1 * this.speed;
-      this.position.y -= 1 * this.speed;
+      this.height += 1 * stickConfig.growSpeed;
+      this.position.y -= 1 * stickConfig.growSpeed;
       this.drawStick(ctx);
     }
   }

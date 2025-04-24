@@ -1,7 +1,7 @@
-import { platforms } from "./platform.js";
+import { platforms, addPlatform } from "./platform.js";
 
 import Stick from "./stick.js";
-import { animateHero, moving, stop } from "./Hero.js";
+import { animateHero, stop } from "./Hero.js";
 
 const container = document.querySelector(".container");
 const bgCanvas = document.getElementById("bgCanvas");
@@ -79,13 +79,10 @@ async function main() {
       }
       stick.drawStick(ctx);
       stick.rotateStick(ctx);
-
-      if (stick.collision) {
-        moving();
-        stick.collision = false;
-      }
     });
-    stop();
+
+    stop(sticks);
+
     animateHero(ctx);
   }
 
