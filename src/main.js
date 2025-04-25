@@ -1,7 +1,7 @@
 import { platforms, addPlatform } from "./platform.js";
 
 import Stick from "./stick.js";
-import { animateHero, stop } from "./Hero.js";
+import { animateHero, stop, moving } from "./Hero.js";
 
 const container = document.querySelector(".container");
 const bgCanvas = document.getElementById("bgCanvas");
@@ -9,7 +9,7 @@ const canvas = document.getElementById("gameCanvas");
 const bgCtx = bgCanvas.getContext("2d");
 const ctx = canvas.getContext("2d");
 ctx.imageSmoothingEnabled = false;
-
+console.log(ctx);
 // drawBackground at the top to be accessible always
 function drawBackground() {
   let gradient = bgCtx.createLinearGradient(0, 0, 0, bgCanvas.height);
@@ -50,6 +50,10 @@ async function main() {
   window.addEventListener("mouseup", (event) => {
     let lastStick = sticks[sticks.length - 1];
     lastStick.isPressing = false;
+    console.log(`stop`);
+    stop(sticks);
+
+    /* addPlatform(); */
   });
 
   ////////////////////// hero /////////////7
@@ -80,8 +84,7 @@ async function main() {
       stick.drawStick(ctx);
       stick.rotateStick(ctx);
     });
-
-    stop(sticks);
+    moving();
 
     animateHero(ctx);
   }

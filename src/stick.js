@@ -1,6 +1,6 @@
 const stickConfig = {
   width: 4,
-  growSpeed: 3,
+  growSpeed: 5,
   color: "black",
   rotationSpeed: 1,
 };
