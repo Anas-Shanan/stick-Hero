@@ -83,14 +83,12 @@ export function animateHero(ctx) {
     totalFrames++;
     x += speed;
 
-    // 🆕 Dynamic arrival check, moved from `stop()`
+
     const nextPlatform = platforms[targetPlatformIndex];
     if (x + 60 >= nextPlatform.rightEdge) {
-      console.log(`x after`, x);
-      console.log(`wasal`);
+
       isMoving = false;
-      console.log("Hero reached platform", targetPlatformIndex);
-      console.log(`moving`, isMoving);
+
       targetPlatformIndex++;
       addPlatform();
     }
