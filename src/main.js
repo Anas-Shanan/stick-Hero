@@ -52,7 +52,6 @@ async function main() {
     lastStick.isPressing = false;
     stop(sticks);
 
-    /* addPlatform(); */
   });
 
   ////////////////////// hero /////////////7
@@ -73,9 +72,6 @@ async function main() {
     // Draw platforms
     platforms.forEach((platform) => platform.drawPlatform(ctx));
 
-    // stop Hero
-
-    // Draw sticks
     sticks.forEach((stick) => {
       if (stick.isPressing) {
         stick.increaseHeight(ctx);

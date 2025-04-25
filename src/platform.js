@@ -25,11 +25,11 @@ export default class Platform {
     this.middlePoint = width
       ? 0
       : {
-          width: 15,
-          height: 8,
-          x: this.position.x + this.width / 2 - 7.5,
-          y: this.position.y,
-        };
+        width: 15,
+        height: 8,
+        x: this.position.x + this.width / 2 - 7.5,
+        y: this.position.y,
+      };
   }
 
   drawPlatform(ctx) {
@@ -60,7 +60,7 @@ platforms.push(new Platform(secondPosition + 100, canvas));
 ////////// add new platform
 
 export function addPlatform() {
-  console.log(` add platform`, addPlatform);
+
   const lastPlatform = platforms[platforms.length - 1];
 
   const newPosX =
