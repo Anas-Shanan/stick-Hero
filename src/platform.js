@@ -2,7 +2,7 @@ const platformConfig = {
   minGap: 80, // Minimum gap between platforms
   maxGap: 220, // Maximum gap between platforms
   height: 500,
-  MIN_WIDTH: 40,
+  MIN_WIDTH: 60,
   MAX_WIDTH: 180,
   color: "black",
 };
@@ -25,12 +25,14 @@ export default class Platform {
     this.middlePoint = width
       ? 0
       : {
-        width: 15,
-        height: 8,
-        x: this.position.x + this.width / 2 - 7.5,
-        y: this.position.y,
-      };
+          width: 15,
+          height: 8,
+          x: this.position.x + this.width / 2 - 7.5,
+          y: this.position.y,
+        };
   }
+
+  //////////////////////// functions //////////////////////////////////////
 
   drawPlatform(ctx) {
     ctx.fillStyle = this.color;
@@ -60,7 +62,6 @@ platforms.push(new Platform(secondPosition + 100, canvas));
 ////////// add new platform
 
 export function addPlatform() {
-
   const lastPlatform = platforms[platforms.length - 1];
 
   const newPosX =
@@ -75,10 +76,3 @@ export function addPlatform() {
       platforms.shift(); // to remove oldest platform
     } */
 }
-
-document.addEventListener("keydown", (event) => {
-  if (event.key === "ArrowRight") {
-    addPlatform();
-    console.log("platforms array", platforms);
-  }
-});

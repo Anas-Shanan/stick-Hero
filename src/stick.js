@@ -17,6 +17,12 @@ export default class Stick {
     this.isPressing = false;
     this.collision = false;
   }
+  //////////////////////// functions //////////////////////////////////////
+
+  resetCollision() {
+    this.collision = false;
+  }
+
   drawStick(ctx) {
     ctx.fillStyle = stickConfig.color;
     ctx.fillRect(
@@ -25,9 +31,6 @@ export default class Stick {
       stickConfig.width,
       this.height
     );
-  }
-  resetCollision() {
-    this.collision = false;
   }
 
   rotateStick(ctx) {

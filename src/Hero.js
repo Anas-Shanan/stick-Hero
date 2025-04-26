@@ -1,68 +1,32 @@
 import { addPlatform, platforms } from "./platform.js";
 
+// Constants
 const spriteSheet = new Image();
 spriteSheet.src = "../assets/imgs/spritesheet6.png";
 
 const frameWidth = 64;
 const frameHeight = 64;
-let totalFrames = 0;
-let currentFrame = 0;
-let x = platforms.length === 2 ? 200 : animateHero();
-let y = 0;
-let yCanvas = 525;
-const speed = 4;
-let isMoving = false;
+const walkSpeed = 4;
 const fallSpeed = 15;
 
+///// for Hero State
+let totalFrames = 0;
+let currentFrame = 0;
+let x = 200;
+let y = 0;
+let yCanvas = 525;
+let isWalking = false;
+let isFalling = false;
+let targetX = null;
 let targetPlatformIndex = 1;
+let hasLandedSafely = false;
 
-export function moving(targetDistance) {
-  if (isMoving) {
-    if (x + 60 >= targetDistance) {
-      isMoving = false;
-      currentFrame = 0;
-    }
-  }
+////////////  Functions
+function fall() {
+  yCanvas += fallSpeed;
 }
 
-function fall(targetDistance) {
-  if (x >= targetDistance) {
-    currentFrame = 0;
-    isMoving = false;
-    yCanvas += fallSpeed;
-  }
-}
-
-export function stop(sticks) {
-  if (sticks.length === 0) return;
-
-  const currentPlatform = platforms[targetPlatformIndex - 1];
-  const nextPlatform = platforms[targetPlatformIndex];
-  const lastStick = sticks[sticks.length - 1];
-
-  if (!lastStick) return;
-
-  const stickEndX = currentPlatform.rightEdge + lastStick.height;
-
-  lastStick.collision = true;
-
-  if (lastStick.collision) {
-    if (
-      stickEndX >= nextPlatform.position.x &&
-      stickEndX <= nextPlatform.rightEdge
-    ) {
-      isMoving = true;
-      moving(nextPlatform.rightEdge);
-    } else {
-      isMoving = true;
-      moving(stickEndX + 60);
-      fall(stickEndX);
-      lastStick.resetCollision();
-    }
-  }
-}
-
-export function animateHero(ctx) {
+function drawHero(ctx) {
   ctx.drawImage(
     spriteSheet,
     currentFrame * frameWidth,
@@ -74,25 +38,82 @@ export function animateHero(ctx) {
     frameWidth,
     frameHeight
   );
+}
 
-  if (isMoving) {
-    if (totalFrames % 4 === 0) {
-      currentFrame = (currentFrame + 1) % 6;
+function updateWalking() {
+  if (totalFrames % 6 === 0) {
+    currentFrame = (currentFrame + 1) % 6;
+  }
+
+  totalFrames++;
+  x += walkSpeed;
+
+  if (x + frameWidth / 4 >= targetX) {
+    isWalking = false;
+    currentFrame = 0;
+    targetX = null;
+    if (!hasLandedSafely) {
+      checkLanding();
+    } else {
+      hasLandedSafely = false; // Reset for next jump
     }
+  }
+}
 
-    totalFrames++;
-    x += speed;
+function checkLanding() {
+  const nextPlatform = platforms[targetPlatformIndex];
+  const heroRightEdge = x + frameWidth / 4;
 
+  if (
+    x + frameWidth / 4 >= nextPlatform.position.x &&
+    heroRightEdge <= nextPlatform.rightEdge
+  ) {
+    // Landed correctly
 
-    const nextPlatform = platforms[targetPlatformIndex];
-    if (x + 60 >= nextPlatform.rightEdge) {
+    targetPlatformIndex++;
+    addPlatform();
+    isFalling = false;
+    hasLandedSafely = true;
+    //// let the hero walk to the right edge //////
+    targetX = nextPlatform.rightEdge - frameWidth;
+    isWalking = true;
+  } else {
+    // Missed
+    isFalling = true;
+  }
+}
 
-      isMoving = false;
+function startWalking(stickEndX) {
+  targetX = stickEndX;
+  isWalking = true;
+  isFalling = false;
+}
 
-      targetPlatformIndex++;
-      addPlatform();
-    }
+// ====== Exported Functions ======
+export function stop(sticks) {
+  if (sticks.length === 0) return;
 
-    return x;
+  const lastStick = sticks[sticks.length - 1];
+  const currentPlatform = platforms[targetPlatformIndex - 1];
+  const nextPlatform = platforms[targetPlatformIndex];
+
+  if (!lastStick || !currentPlatform || !nextPlatform) return;
+
+  const stickEndX = currentPlatform.rightEdge + lastStick.height;
+
+  lastStick.collision = true;
+  startWalking(stickEndX);
+  lastStick.resetCollision();
+}
+
+export function animateHero(ctx) {
+  drawHero(ctx);
+
+  if (isWalking) {
+    updateWalking();
+  }
+
+  if (isFalling) {
+    fall();
   }
 }

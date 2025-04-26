@@ -1,6 +1,6 @@
 import { platforms } from "./platform.js";
 
-import { animateHero, moving, stop } from "./Hero.js";
+import { animateHero, stop } from "./Hero.js";
 import Stick from "./stick.js";
 
 const container = document.querySelector(".container");
@@ -10,7 +10,7 @@ const bgCtx = bgCanvas.getContext("2d");
 const ctx = canvas.getContext("2d");
 ctx.imageSmoothingEnabled = false;
 
-// drawBackground at the top to be accessible always
+// dont forget... drawBackground at the top to be accessible always man..
 function drawBackground() {
   let gradient = bgCtx.createLinearGradient(0, 0, 0, bgCanvas.height);
   gradient.addColorStop(0, "#87ceeb");
@@ -37,7 +37,7 @@ async function main() {
     bgCanvas.height = canvas.height = container.offsetHeight;
     drawBackground();
   }
-
+  ///////////////////////////////////////////////////////////////
   const sticks = [];
   const firstStick = new Stick(platforms[platforms.length - 1]);
 
@@ -51,18 +51,9 @@ async function main() {
     let lastStick = sticks[sticks.length - 1];
     lastStick.isPressing = false;
     stop(sticks);
-
   });
 
-  ////////////////////// hero /////////////7
-
-  /* const spriteSheet = new Image();
-  spriteSheet.src = "../assets/imgs/spritesheet6.png";
-  spriteSheet.onload = () => {
-    console.log("Image loaded");
-    gameloop();
-  };
- */
+  ///////////////////////////////////////////////////////////////
 
   ///////////////////////////////////////////////////////////////
   function draw() {
@@ -79,13 +70,13 @@ async function main() {
       stick.drawStick(ctx);
       stick.rotateStick(ctx);
     });
-    moving();
 
     animateHero(ctx);
   }
 
-  // Initialize and draw background immediately
+  // Initialize and draw background
   initCanvases();
+  ///////////////////////////////////////////////////////////////
 
   function gameloop() {
     draw();
