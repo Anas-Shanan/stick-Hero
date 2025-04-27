@@ -1,8 +1,8 @@
 const platformConfig = {
-  minGap: 80, // Minimum gap between platforms
-  maxGap: 220, // Maximum gap between platforms
+  minGap: 40, // Minimum gap between platforms
+  maxGap: 420, // Maximum gap between platforms
   height: 500,
-  MIN_WIDTH: 60,
+  MIN_WIDTH: 40,
   MAX_WIDTH: 180,
   color: "black",
 };
@@ -49,15 +49,18 @@ export default class Platform {
 }
 
 export const platforms = [];
-
 const canvas = document.getElementById("gameCanvas");
-let startPosX = 200; // Starting X position
+export function initPlatforms() {
+  platforms.length = 0;
+  let startPosX = 200; // Starting X position
 
-const firstPlatform = new Platform(startPosX, canvas, 150);
-platforms.push(firstPlatform);
+  const firstPlatform = new Platform(startPosX, canvas, 150);
+  platforms.push(firstPlatform);
 
-const secondPosition = firstPlatform.rightEdge + platformConfig.minGap;
-platforms.push(new Platform(secondPosition + 100, canvas));
+  const secondPosition = firstPlatform.rightEdge + platformConfig.minGap;
+  platforms.push(new Platform(secondPosition + 100, canvas));
+}
+initPlatforms();
 
 ////////// add new platform
 
@@ -67,7 +70,7 @@ export function addPlatform() {
   const newPosX =
     lastPlatform.rightEdge +
     platformConfig.minGap +
-    Math.random() * (platformConfig.maxGap - platformConfig.minGap);
+    Math.random() * platformConfig.maxGap;
 
   const newPlatform = new Platform(newPosX, canvas);
   platforms.push(newPlatform);

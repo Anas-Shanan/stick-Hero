@@ -1,3 +1,5 @@
+import { sticks } from "./main.js";
+
 const stickConfig = {
   width: 4,
   growSpeed: 5,
@@ -65,4 +67,7 @@ export default class Stick {
       this.drawStick(ctx);
     }
   }
+}
+export function clearSticks() {
+  sticks.length = 0;
 }

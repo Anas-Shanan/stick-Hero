@@ -1,6 +1,8 @@
 import { addPlatform, platforms } from "./platform.js";
-
+import { canvas, sticks } from "./main.js";
+import { resetGame } from "./reset.js";
 // Constants
+
 const spriteSheet = new Image();
 spriteSheet.src = "../assets/imgs/spritesheet6.png";
 
@@ -22,8 +24,12 @@ let targetPlatformIndex = 1;
 let hasLandedSafely = false;
 
 ////////////  Functions
-function fall() {
+function fall(canvas) {
   yCanvas += fallSpeed;
+  if (yCanvas >= canvas.height) {
+    sticks.length = 0;
+    resetGame();
+  }
 }
 
 function drawHero(ctx) {
@@ -55,9 +61,14 @@ function updateWalking() {
     if (!hasLandedSafely) {
       checkLanding();
     } else {
-      hasLandedSafely = false; // Reset for next jump
+      hasLandedSafely = false; // Reset
     }
   }
+}
+function startWalking(stickEndX) {
+  targetX = stickEndX;
+  isWalking = true;
+  isFalling = false;
 }
 
 function checkLanding() {
@@ -83,12 +94,6 @@ function checkLanding() {
   }
 }
 
-function startWalking(stickEndX) {
-  targetX = stickEndX;
-  isWalking = true;
-  isFalling = false;
-}
-
 // ====== Exported Functions ======
 export function stop(sticks) {
   if (sticks.length === 0) return;
@@ -102,6 +107,7 @@ export function stop(sticks) {
   const stickEndX = currentPlatform.rightEdge + lastStick.height;
 
   lastStick.collision = true;
+
   startWalking(stickEndX);
   lastStick.resetCollision();
 }
@@ -114,6 +120,17 @@ export function animateHero(ctx) {
   }
 
   if (isFalling) {
-    fall();
+    fall(canvas);
   }
+}
+
+export function initHero() {
+  x = 200;
+  yCanvas = 525;
+  currentFrame = 0;
+  totalFrames = 0;
+  hasLandedSafely = false;
+  isWalking = false;
+  isFalling = false;
+  targetPlatformIndex = 1;
 }

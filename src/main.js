@@ -1,11 +1,12 @@
 import { platforms } from "./platform.js";
-
 import { animateHero, stop } from "./Hero.js";
 import Stick from "./stick.js";
+import { resetGame } from "./reset.js";
 
 const container = document.querySelector(".container");
 const bgCanvas = document.getElementById("bgCanvas");
-const canvas = document.getElementById("gameCanvas");
+export const canvas = document.getElementById("gameCanvas");
+const resetBtn = document.getElementById("resetGame");
 const bgCtx = bgCanvas.getContext("2d");
 const ctx = canvas.getContext("2d");
 ctx.imageSmoothingEnabled = false;
@@ -30,15 +31,15 @@ const resizeObserver = new ResizeObserver(() => {
 });
 resizeObserver.observe(container.parentElement);
 
+// Initialize canvases
+export function initCanvases() {
+  bgCanvas.width = canvas.width = container.offsetWidth;
+  bgCanvas.height = canvas.height = container.offsetHeight;
+  drawBackground();
+}
+export const sticks = [];
 async function main() {
-  // Initialize canvases
-  function initCanvases() {
-    bgCanvas.width = canvas.width = container.offsetWidth;
-    bgCanvas.height = canvas.height = container.offsetHeight;
-    drawBackground();
-  }
   ///////////////////////////////////////////////////////////////
-  const sticks = [];
   const firstStick = new Stick(platforms[platforms.length - 1]);
 
   window.addEventListener("mousedown", (event) => {
@@ -51,6 +52,10 @@ async function main() {
     let lastStick = sticks[sticks.length - 1];
     lastStick.isPressing = false;
     stop(sticks);
+  });
+
+  resetBtn.addEventListener("click", () => {
+    resetGame(canvas);
   });
 
   ///////////////////////////////////////////////////////////////
