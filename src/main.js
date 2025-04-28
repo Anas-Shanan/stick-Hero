@@ -1,14 +1,15 @@
 import { platforms } from "./platform.js";
-import { animateHero, stop } from "./Hero.js";
+import { animateHero, destination, isWalking } from "./Hero.js";
+
 import Stick from "./stick.js";
 import { resetGame } from "./reset.js";
 
 const container = document.querySelector(".container");
 const bgCanvas = document.getElementById("bgCanvas");
 export const canvas = document.getElementById("gameCanvas");
-const resetBtn = document.getElementById("resetGame");
+export const scoreElement = document.getElementById("score");
 const bgCtx = bgCanvas.getContext("2d");
-const ctx = canvas.getContext("2d");
+export const ctx = canvas.getContext("2d");
 ctx.imageSmoothingEnabled = false;
 
 // dont forget... drawBackground at the top to be accessible always man..
@@ -41,23 +42,51 @@ export const sticks = [];
 async function main() {
   ///////////////////////////////////////////////////////////////
   const firstStick = new Stick(platforms[platforms.length - 1]);
-
   window.addEventListener("mousedown", (event) => {
-    sticks.push(new Stick(platforms[platforms.length - 2]));
-    let lastStick = sticks[sticks.length - 1];
-    lastStick.isPressing = true;
+    if (platforms.length >= 2 && !isWalking) {
+      sticks.push(new Stick(platforms[platforms.length - 2]));
+      let lastStick = sticks[sticks.length - 1];
+      lastStick.isPressing = true;
+    }
   });
 
   window.addEventListener("mouseup", (event) => {
-    let lastStick = sticks[sticks.length - 1];
-    lastStick.isPressing = false;
-    stop(sticks);
+    if (sticks.length > 0 && !isWalking) {
+      let lastStick = sticks[sticks.length - 1];
+      lastStick.isPressing = false;
+      destination(sticks);
+    }
   });
+  canvas.addEventListener("click", (event) => {
+    const scale =
+      parseFloat(
+        getComputedStyle(document.documentElement).getPropertyValue("--scale")
+      ) || 1;
+    const rect = canvas.getBoundingClientRect();
+    const clickX = (event.clientX - rect.left) / scale;
+    const clickY = (event.clientY - rect.top) / scale;
 
-  resetBtn.addEventListener("click", () => {
-    resetGame(canvas);
+    // Check if click is within the play button circle
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 3;
+    const radius = 130;
+    console.log(`Scale: ${scale}`);
+    console.log(`x`, clickX);
+    console.log(`y`, clickY);
+    // Adjust centerX to match the actual position of your play button
+
+    const distance = Math.sqrt(
+      Math.pow(clickX - centerX, 2) + Math.pow(clickY - centerY, 2)
+    );
+    console.log(`distance`, distance);
+
+    if (distance <= radius && sticks.length === 0) {
+      console.log("Play button clicked!");
+      console.log(`distance2`, distance);
+
+      resetGame();
+    }
   });
-
   ///////////////////////////////////////////////////////////////
 
   ///////////////////////////////////////////////////////////////

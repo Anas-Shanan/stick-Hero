@@ -2,7 +2,7 @@ const platformConfig = {
   minGap: 40, // Minimum gap between platforms
   maxGap: 420, // Maximum gap between platforms
   height: 500,
-  MIN_WIDTH: 40,
+  MIN_WIDTH: 62,
   MAX_WIDTH: 180,
   color: "black",
 };
@@ -25,9 +25,9 @@ export default class Platform {
     this.middlePoint = width
       ? 0
       : {
-          width: 15,
+          width: 20,
           height: 8,
-          x: this.position.x + this.width / 2 - 7.5,
+          x: this.position.x + this.width / 2 - 10,
           y: this.position.y,
         };
   }

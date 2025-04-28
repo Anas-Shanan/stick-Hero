@@ -15,3 +15,16 @@ export function resetGame() {
   clearSticks();
   /* Stick.lastStick.resetCollision(); */
 }
+
+export function play(ctx) {
+  ctx.fillStyle = "red";
+  ctx.beginPath();
+  ctx.arc(canvas.width / 2, canvas.height / 3, 130, 0, 2 * Math.PI);
+
+  ctx.fill();
+
+  ctx.fillStyle = "white";
+  ctx.font = "70px Helvetica";
+  ctx.textAlign = "center";
+  ctx.fillText("PLAY", canvas.width / 2, canvas.height / 3 + 30);
+}

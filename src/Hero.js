@@ -1,8 +1,10 @@
 import { addPlatform, platforms } from "./platform.js";
-import { canvas, sticks } from "./main.js";
-import { resetGame } from "./reset.js";
-// Constants
+import { canvas, sticks, ctx, scoreElement } from "./main.js";
+import { play } from "./reset.js";
 
+import { animateDoubleScore } from "./stick.js";
+
+// Constants
 const spriteSheet = new Image();
 spriteSheet.src = "../assets/imgs/spritesheet6.png";
 
@@ -11,24 +13,52 @@ const frameHeight = 64;
 const walkSpeed = 4;
 const fallSpeed = 15;
 
-///// for Hero State
+// Hero State
 let totalFrames = 0;
 let currentFrame = 0;
 let x = 200;
 let y = 0;
 let yCanvas = 525;
-let isWalking = false;
+
+export let isWalking = false;
 let isFalling = false;
 let targetX = null;
 let targetPlatformIndex = 1;
 let hasLandedSafely = false;
+let score = 0;
+let doubleScore = false;
 
-////////////  Functions
-function fall(canvas) {
+// ====== Internal Functions ======
+
+function updateScore() {
+  if (doubleScore) {
+    score += 2;
+    let herox = x;
+    let y = yCanvas;
+    animateDoubleScore(herox, y);
+  } else {
+    score += 1;
+  }
+  doubleScore = false;
+
+  scoreElement.textContent = score;
+  scoreElement.classList.remove("score-animated");
+  void scoreElement.offsetWidth; // Force reflow
+  scoreElement.classList.add("score-animated");
+}
+
+function resetScore() {
+  score = 0;
+  if (scoreElement) {
+    scoreElement.textContent = score;
+  }
+}
+
+function fall() {
   yCanvas += fallSpeed;
   if (yCanvas >= canvas.height) {
     sticks.length = 0;
-    resetGame();
+    play(ctx); // Restart the game after falling
   }
 }
 
@@ -54,61 +84,89 @@ function updateWalking() {
   totalFrames++;
   x += walkSpeed;
 
-  if (x + frameWidth / 4 >= targetX) {
+  if (x >= targetX) {
+    x = targetX;
     isWalking = false;
     currentFrame = 0;
     targetX = null;
+
     if (!hasLandedSafely) {
       checkLanding();
     } else {
-      hasLandedSafely = false; // Reset
+      hasLandedSafely = false; // jus a reset
     }
   }
 }
-function startWalking(stickEndX) {
-  targetX = stickEndX;
+
+function startWalking(destinationX) {
+  targetX = destinationX;
   isWalking = true;
   isFalling = false;
 }
 
 function checkLanding() {
   const nextPlatform = platforms[targetPlatformIndex];
-  const heroRightEdge = x + frameWidth / 4;
+  if (!nextPlatform) return;
+
+  const heroRightEdge = x + frameWidth;
+  const hero25point = x + frameWidth / 4;
 
   if (
-    x + frameWidth / 4 >= nextPlatform.position.x &&
+    hero25point >= nextPlatform.position.x &&
     heroRightEdge <= nextPlatform.rightEdge
   ) {
-    // Landed correctly
-
+    // Landed safely
+    updateScore();
     targetPlatformIndex++;
     addPlatform();
     isFalling = false;
     hasLandedSafely = true;
-    //// let the hero walk to the right edge //////
+
+    // After safe landing, continue walking until right edge
     targetX = nextPlatform.rightEdge - frameWidth;
     isWalking = true;
   } else {
-    // Missed
+    // Missed landing
     isFalling = true;
   }
 }
 
 // ====== Exported Functions ======
-export function stop(sticks) {
-  if (sticks.length === 0) return;
 
+export function destination(sticks) {
   const lastStick = sticks[sticks.length - 1];
   const currentPlatform = platforms[targetPlatformIndex - 1];
   const nextPlatform = platforms[targetPlatformIndex];
 
   if (!lastStick || !currentPlatform || !nextPlatform) return;
 
-  const stickEndX = currentPlatform.rightEdge + lastStick.height;
-
   lastStick.collision = true;
 
-  startWalking(stickEndX);
+  const stickEndX = currentPlatform.rightEdge + lastStick.height;
+
+  //// double score check in ////
+  doubleScore = false;
+  if (
+    nextPlatform.middlePoint &&
+    stickEndX >= nextPlatform.middlePoint.x &&
+    stickEndX <= nextPlatform.middlePoint.x + nextPlatform.middlePoint.width
+  ) {
+    doubleScore = true;
+  }
+
+  //////////////////////////////////////
+
+  if (
+    stickEndX >= nextPlatform.position.x &&
+    stickEndX <= nextPlatform.rightEdge
+  ) {
+    // Correct landing
+    startWalking(nextPlatform.rightEdge - frameWidth);
+  } else {
+    // Missed
+    startWalking(stickEndX);
+  }
+
   lastStick.resetCollision();
 }
 
@@ -120,7 +178,7 @@ export function animateHero(ctx) {
   }
 
   if (isFalling) {
-    fall(canvas);
+    fall();
   }
 }
 
@@ -133,4 +191,8 @@ export function initHero() {
   isWalking = false;
   isFalling = false;
   targetPlatformIndex = 1;
+  score = 0;
+  if (scoreElement) {
+    scoreElement.textContent = score;
+  }
 }

@@ -2,7 +2,7 @@ import { sticks } from "./main.js";
 
 const stickConfig = {
   width: 4,
-  growSpeed: 5,
+  growSpeed: 7,
   color: "black",
   rotationSpeed: 1,
 };
@@ -70,4 +70,21 @@ export default class Stick {
 }
 export function clearSticks() {
   sticks.length = 0;
+}
+
+export function animateDoubleScore(x, y) {
+  const doubleScoreText = document.createElement("div");
+  doubleScoreText.textContent = "PERFECT! +2";
+  doubleScoreText.style.position = "absolute";
+  doubleScoreText.style.left = `${x}px`;
+  doubleScoreText.style.top = `${y - 40}px`;
+  doubleScoreText.style.color = "gold";
+  doubleScoreText.style.fontWeight = "bold";
+  doubleScoreText.style.fontSize = "24px";
+  doubleScoreText.style.textShadow = "2px 2px 4px rgba(0,0,0,0.5)";
+  doubleScoreText.style.animation = "fadeUp 6s forwards";
+  document.body.appendChild(doubleScoreText);
+  setTimeout(() => {
+    document.body.removeChild(doubleScoreText);
+  }, 1000);
 }
