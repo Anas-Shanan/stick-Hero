@@ -8,6 +8,7 @@ const container = document.querySelector(".container");
 const bgCanvas = document.getElementById("bgCanvas");
 export const canvas = document.getElementById("gameCanvas");
 export const scoreElement = document.getElementById("score");
+const holdElement = document.getElementById("hold");
 const bgCtx = bgCanvas.getContext("2d");
 export const ctx = canvas.getContext("2d");
 ctx.imageSmoothingEnabled = false;
@@ -16,7 +17,7 @@ export const camera = {
   x: 0,
   speed: 2,
   following: true, // Whether camera is actively following the player
-  margin: 500,
+  margin: 700,
 };
 
 // dont forget... drawBackground at the top to be accessible always man..
@@ -44,7 +45,14 @@ export function initCanvases() {
   bgCanvas.width = canvas.width = container.offsetWidth;
   bgCanvas.height = canvas.height = container.offsetHeight;
   drawBackground();
+  holdText();
 }
+export function holdText() {
+  holdElement.classList.remove("hold-animated");
+  void holdElement.offsetWidth;
+  holdElement.classList.add("hold-animated");
+}
+
 export const sticks = [];
 async function main() {
   ///////////////////////////////////////////////////////////////
@@ -77,7 +85,7 @@ async function main() {
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 3;
     const radius = 110;
-    console.log(`Scale: ${scale}`);
+
     console.log(`x`, clickX);
     console.log(`y`, clickY);
 
@@ -88,7 +96,6 @@ async function main() {
 
     if (distance <= radius && sticks.length === 0) {
       console.log("Play button clicked!");
-      console.log(`distance2`, distance);
 
       resetGame();
     }
@@ -104,10 +111,12 @@ async function main() {
       camera.x += (targetX - camera.x) * 0.05; // Smooth follow effect
     }
   }
+
   ///////////////////////////////////////////////////////////////
   function draw() {
     // Clear only game canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     ctx.save();
     ctx.translate(-camera.x, 0);
 

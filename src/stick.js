@@ -1,4 +1,5 @@
 import { sticks } from "./main.js";
+/* import { heroX } from "./Hero.js"; */
 
 const stickConfig = {
   width: 4,
@@ -72,19 +73,19 @@ export function clearSticks() {
   sticks.length = 0;
 }
 
-export function animateDoubleScore(x, y) {
+export function animateDoubleScore() {
   const doubleScoreText = document.createElement("div");
   doubleScoreText.textContent = "PERFECT! +2";
   doubleScoreText.style.position = "absolute";
-  doubleScoreText.style.left = `${x}px`;
-  doubleScoreText.style.top = `${y - 60}px`;
+  doubleScoreText.style.left = `${700}px`;
+  doubleScoreText.style.top = `${450}px`;
   doubleScoreText.style.color = "gold";
   doubleScoreText.style.fontWeight = "bold";
   doubleScoreText.style.fontSize = "24px";
   doubleScoreText.style.textShadow = "2px 2px 4px rgba(0,0,0,0.5)";
-  doubleScoreText.style.animation = "fadeUp 6s forwards";
+  doubleScoreText.style.animation = "fadeUp 5s forwards";
   document.body.appendChild(doubleScoreText);
   setTimeout(() => {
     document.body.removeChild(doubleScoreText);
-  }, 1000);
+  }, 6000);
 }

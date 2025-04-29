@@ -1,5 +1,5 @@
-import { canvas } from "./main.js";
-import { initCanvases } from "./main.js";
+import { canvas, initCanvases, holdText } from "./main.js";
+
 import { initHero } from "./Hero.js";
 import { initPlatforms } from "./platform.js";
 import { clearSticks } from "./stick.js";
@@ -13,6 +13,7 @@ export function resetGame() {
   initPlatforms();
   initHero();
   clearSticks();
+  holdText();
   /* Stick.lastStick.resetCollision(); */
 }
 

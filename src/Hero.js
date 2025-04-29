@@ -11,7 +11,7 @@ spriteSheet.src = "../assets/imgs/spritesheet6.png";
 // Hero State
 export let heroX = 200;
 
-let yCanvas = 525;
+let yCanvas = 522;
 let totalFrames = 0;
 let currentFrame = 0;
 
@@ -33,9 +33,8 @@ let doubleScore = false;
 function updateScore() {
   if (doubleScore) {
     score += 2;
-    let herox = heroX;
-    let y = yCanvas;
-    animateDoubleScore(herox, y);
+
+    animateDoubleScore();
   } else {
     score += 1;
   }
@@ -77,7 +76,7 @@ function drawHero(ctx) {
 }
 
 function updateWalking() {
-  if (totalFrames % 6 === 0) {
+  if (totalFrames % 4 === 0) {
     currentFrame = (currentFrame + 1) % 6;
   }
 
@@ -109,10 +108,10 @@ function checkLanding() {
   if (!nextPlatform) return;
 
   const heroRightEdge = heroX + frameWidth;
-  const hero25point = heroX + frameWidth / 4;
+  /*  const hero25point = heroX + frameWidth / 4; */
 
   if (
-    hero25point >= nextPlatform.position.x &&
+    heroX >= nextPlatform.position.x &&
     heroRightEdge <= nextPlatform.rightEdge
   ) {
     // here he Landed safely

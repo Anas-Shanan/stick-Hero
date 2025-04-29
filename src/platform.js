@@ -1,11 +1,11 @@
-import { camera } from "./main.js";
+/* import { camera } from "./main.js"; */
 
 const platformConfig = {
   minGap: 40, // Minimum gap between platforms
   maxGap: 420, // Maximum gap between platforms
   height: 500,
   MIN_WIDTH: 62,
-  MAX_WIDTH: 180,
+  MAX_WIDTH: 150,
   color: "black",
 };
 

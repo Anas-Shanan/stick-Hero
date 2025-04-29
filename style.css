@@ -58,6 +58,7 @@ html {
   background-color: red;
   color: white;
 }
+
 @keyframes scoreAnimation {
   0% {
     transform: scale(1);
@@ -83,5 +84,37 @@ html {
   100% {
     transform: translateY(-50px);
     opacity: 0;
+  }
+}
+
+#hold {
+  position: absolute;
+  top: 200px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 30px;
+  font-weight: bold;
+  color: #2c2b2b;
+  text-shadow: 1px 1px 1px rgba(17, 17, 17, 0.9);
+  opacity: 0; /* Start invisible */
+  z-index: 100;
+}
+
+.hold-animated {
+  animation: fadeUp 5s forwards;
+}
+
+@keyframes fadeUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0) translateX(-50%);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(0) translateX(-50%);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-30px) translateX(-50%);
   }
 }
