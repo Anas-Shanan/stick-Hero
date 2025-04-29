@@ -77,7 +77,7 @@ export function animateDoubleScore(x, y) {
   doubleScoreText.textContent = "PERFECT! +2";
   doubleScoreText.style.position = "absolute";
   doubleScoreText.style.left = `${x}px`;
-  doubleScoreText.style.top = `${y - 40}px`;
+  doubleScoreText.style.top = `${y - 60}px`;
   doubleScoreText.style.color = "gold";
   doubleScoreText.style.fontWeight = "bold";
   doubleScoreText.style.fontSize = "24px";

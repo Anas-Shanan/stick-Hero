@@ -8,17 +8,17 @@ import { animateDoubleScore } from "./stick.js";
 const spriteSheet = new Image();
 spriteSheet.src = "../assets/imgs/spritesheet6.png";
 
-const frameWidth = 64;
-const frameHeight = 64;
-const walkSpeed = 4;
-const fallSpeed = 15;
-
 // Hero State
+export let heroX = 200;
+
+let yCanvas = 525;
 let totalFrames = 0;
 let currentFrame = 0;
-let x = 200;
-let y = 0;
-let yCanvas = 525;
+
+const frameWidth = 64;
+const frameHeight = 64;
+const walkSpeed = 6;
+const fallSpeed = 15;
 
 export let isWalking = false;
 let isFalling = false;
@@ -28,12 +28,12 @@ let hasLandedSafely = false;
 let score = 0;
 let doubleScore = false;
 
-// ====== Internal Functions ======
+// ====== Internal Functions
 
 function updateScore() {
   if (doubleScore) {
     score += 2;
-    let herox = x;
+    let herox = heroX;
     let y = yCanvas;
     animateDoubleScore(herox, y);
   } else {
@@ -47,12 +47,12 @@ function updateScore() {
   scoreElement.classList.add("score-animated");
 }
 
-function resetScore() {
+/* function resetScore() {
   score = 0;
   if (scoreElement) {
     scoreElement.textContent = score;
   }
-}
+} */
 
 function fall() {
   yCanvas += fallSpeed;
@@ -66,10 +66,10 @@ function drawHero(ctx) {
   ctx.drawImage(
     spriteSheet,
     currentFrame * frameWidth,
-    y,
+    0,
     frameWidth,
     frameHeight,
-    x,
+    heroX,
     yCanvas,
     frameWidth,
     frameHeight
@@ -82,10 +82,10 @@ function updateWalking() {
   }
 
   totalFrames++;
-  x += walkSpeed;
+  heroX += walkSpeed;
 
-  if (x >= targetX) {
-    x = targetX;
+  if (heroX >= targetX) {
+    heroX = targetX;
     isWalking = false;
     currentFrame = 0;
     targetX = null;
@@ -108,21 +108,21 @@ function checkLanding() {
   const nextPlatform = platforms[targetPlatformIndex];
   if (!nextPlatform) return;
 
-  const heroRightEdge = x + frameWidth;
-  const hero25point = x + frameWidth / 4;
+  const heroRightEdge = heroX + frameWidth;
+  const hero25point = heroX + frameWidth / 4;
 
   if (
     hero25point >= nextPlatform.position.x &&
     heroRightEdge <= nextPlatform.rightEdge
   ) {
-    // Landed safely
+    // here he Landed safely
     updateScore();
     targetPlatformIndex++;
     addPlatform();
     isFalling = false;
     hasLandedSafely = true;
 
-    // After safe landing, continue walking until right edge
+    // After safe landing continue walking until right edge
     targetX = nextPlatform.rightEdge - frameWidth;
     isWalking = true;
   } else {
@@ -131,7 +131,7 @@ function checkLanding() {
   }
 }
 
-// ====== Exported Functions ======
+// ====== Exported Functions
 
 export function destination(sticks) {
   const lastStick = sticks[sticks.length - 1];
@@ -183,7 +183,7 @@ export function animateHero(ctx) {
 }
 
 export function initHero() {
-  x = 200;
+  heroX = 200;
   yCanvas = 525;
   currentFrame = 0;
   totalFrames = 0;

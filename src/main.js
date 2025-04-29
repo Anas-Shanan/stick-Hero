@@ -1,5 +1,5 @@
 import { platforms } from "./platform.js";
-import { animateHero, destination, isWalking } from "./Hero.js";
+import { heroX, animateHero, destination, isWalking } from "./Hero.js";
 
 import Stick from "./stick.js";
 import { resetGame } from "./reset.js";
@@ -11,6 +11,13 @@ export const scoreElement = document.getElementById("score");
 const bgCtx = bgCanvas.getContext("2d");
 export const ctx = canvas.getContext("2d");
 ctx.imageSmoothingEnabled = false;
+
+export const camera = {
+  x: 0,
+  speed: 2,
+  following: true, // Whether camera is actively following the player
+  margin: 500,
+};
 
 // dont forget... drawBackground at the top to be accessible always man..
 function drawBackground() {
@@ -66,14 +73,13 @@ async function main() {
     const clickX = (event.clientX - rect.left) / scale;
     const clickY = (event.clientY - rect.top) / scale;
 
-    // Check if click is within the play button circle
+    //  click is within the play button circle
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 3;
-    const radius = 130;
+    const radius = 110;
     console.log(`Scale: ${scale}`);
     console.log(`x`, clickX);
     console.log(`y`, clickY);
-    // Adjust centerX to match the actual position of your play button
 
     const distance = Math.sqrt(
       Math.pow(clickX - centerX, 2) + Math.pow(clickY - centerY, 2)
@@ -89,10 +95,21 @@ async function main() {
   });
   ///////////////////////////////////////////////////////////////
 
+  function updateCamera() {
+    /// targetX is the target position of the hero
+    const targetX = Math.max(0, heroX - (canvas.width - camera.margin));
+
+    // Smoothly move camera toward target position
+    if (camera.following) {
+      camera.x += (targetX - camera.x) * 0.05; // Smooth follow effect
+    }
+  }
   ///////////////////////////////////////////////////////////////
   function draw() {
     // Clear only game canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.save();
+    ctx.translate(-camera.x, 0);
 
     // Draw platforms
     platforms.forEach((platform) => platform.drawPlatform(ctx));
@@ -106,6 +123,10 @@ async function main() {
     });
 
     animateHero(ctx);
+    ctx.restore();
+
+    // Update camera position
+    updateCamera();
   }
 
   // Initialize and draw background

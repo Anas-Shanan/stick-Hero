@@ -17,14 +17,22 @@ export function resetGame() {
 }
 
 export function play(ctx) {
+  ctx.save();
+
+  // Reset any transformations to draw in screen coordinates
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+  /// the play button
   ctx.fillStyle = "red";
   ctx.beginPath();
-  ctx.arc(canvas.width / 2, canvas.height / 3, 130, 0, 2 * Math.PI);
+  ctx.arc(canvas.width / 2, canvas.height / 3, 110, 0, 2 * Math.PI);
 
   ctx.fill();
 
   ctx.fillStyle = "white";
-  ctx.font = "70px Helvetica";
+  ctx.font = "40px Helvetica";
   ctx.textAlign = "center";
-  ctx.fillText("PLAY", canvas.width / 2, canvas.height / 3 + 30);
+  ctx.fillText("RESTART", canvas.width / 2, canvas.height / 3 + 20);
+
+  ctx.restore();
 }

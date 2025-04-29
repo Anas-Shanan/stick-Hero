@@ -72,7 +72,7 @@ html {
 
 .score-animated {
   animation: scoreAnimation 0.4s ease-in-out;
-  color: #ffcc00; /* Highlight color during animation */
+  color: #ffcc00;
 }
 
 @keyframes fadeUp {
