@@ -31,10 +31,11 @@ let doubleScore = false;
 // ====== Internal Functions
 
 function updateScore() {
+  console.log(`hero`, heroX);
   if (doubleScore) {
     score += 2;
 
-    animateDoubleScore();
+    animateDoubleScore(heroX);
   } else {
     score += 1;
   }
@@ -142,14 +143,19 @@ export function destination(sticks) {
   lastStick.collision = true;
 
   const stickEndX = currentPlatform.rightEdge + lastStick.height;
-
+  console.log(`stickEndx`, stickEndX);
   //// double score check in ////
   doubleScore = false;
   if (
     nextPlatform.middlePoint &&
     stickEndX >= nextPlatform.middlePoint.x &&
-    stickEndX <= nextPlatform.middlePoint.x + nextPlatform.middlePoint.width
+    stickEndX <= nextPlatform.middlePoint.x + nextPlatform.middlePoint.width + 3
   ) {
+    console.log(`middlepoint.x`, nextPlatform.middlePoint.x);
+    console.log(
+      `middlepoint.width`,
+      nextPlatform.middlePoint.x + nextPlatform.middlePoint.width
+    );
     doubleScore = true;
   }
 

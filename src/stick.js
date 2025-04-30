@@ -1,5 +1,5 @@
-import { sticks } from "./main.js";
-/* import { heroX } from "./Hero.js"; */
+import { sticks, camera } from "./main.js";
+import { heroX } from "./Hero.js";
 
 const stickConfig = {
   width: 4,
@@ -73,19 +73,24 @@ export function clearSticks() {
   sticks.length = 0;
 }
 
-export function animateDoubleScore() {
+export function animateDoubleScore(heroX) {
   const doubleScoreText = document.createElement("div");
   doubleScoreText.textContent = "PERFECT! +2";
   doubleScoreText.style.position = "absolute";
-  doubleScoreText.style.left = `${700}px`;
+  const screenX = heroX - camera.x;
+  console.log(`heroX: ${heroX}, Camera X: ${camera.x}, Screen X: ${screenX}`);
+  console.log(`hero2`, heroX);
+  doubleScoreText.style.left = `${screenX - 150}px`;
+
   doubleScoreText.style.top = `${450}px`;
   doubleScoreText.style.color = "gold";
+  doubleScoreText.style.fontFamily = "Helvetica";
   doubleScoreText.style.fontWeight = "bold";
-  doubleScoreText.style.fontSize = "24px";
+  doubleScoreText.style.fontSize = "16px";
   doubleScoreText.style.textShadow = "2px 2px 4px rgba(0,0,0,0.5)";
-  doubleScoreText.style.animation = "fadeUp 5s forwards";
+  doubleScoreText.style.animation = "fadeUp 3s forwards";
   document.body.appendChild(doubleScoreText);
   setTimeout(() => {
     document.body.removeChild(doubleScoreText);
-  }, 6000);
+  }, 3000);
 }
