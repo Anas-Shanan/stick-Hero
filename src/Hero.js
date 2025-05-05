@@ -11,7 +11,7 @@ spriteSheet.src = "../assets/imgs/spritesheet6.png";
 // Hero State
 export let heroX = 200;
 
-let yCanvas = 522;
+let yCanvas = 722;
 let totalFrames = 0;
 let currentFrame = 0;
 
@@ -25,7 +25,7 @@ let isFalling = false;
 let targetX = null;
 let targetPlatformIndex = 1;
 let hasLandedSafely = false;
-let score = 0;
+export let score = 0;
 let doubleScore = false;
 
 // ====== Internal Functions
@@ -100,8 +100,10 @@ function updateWalking() {
 
 function startWalking(destinationX) {
   targetX = destinationX;
-  isWalking = true;
-  isFalling = false;
+  setTimeout(() => {
+    isWalking = true;
+    isFalling = false;
+  }, 500);
 }
 
 function checkLanding() {
@@ -189,7 +191,7 @@ export function animateHero(ctx) {
 
 export function initHero() {
   heroX = 200;
-  yCanvas = 525;
+  yCanvas = 725;
   currentFrame = 0;
   totalFrames = 0;
   hasLandedSafely = false;

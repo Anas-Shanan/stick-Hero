@@ -3,9 +3,9 @@
 const platformConfig = {
   minGap: 40, // Minimum gap between platforms
   maxGap: 420, // Maximum gap between platforms
-  height: 500,
+  height: 300,
   MIN_WIDTH: 62,
-  MAX_WIDTH: 150,
+  MAX_WIDTH: 130,
   color: "black",
 };
 
@@ -34,13 +34,13 @@ export default class Platform {
         };
     this.isNew = false;
     this.animationProgress = 0;
-    this.animationDuration = 7; // frames
+    this.animationDuration = 7; // how many frames
   }
 
   //////////////////////// functions //////////////////////////////////////
 
   drawPlatform(ctx) {
-    // Handle animation for new platforms
+    // animation for new platforms
     if (this.isNew) {
       this.animationProgress++;
 
@@ -48,18 +48,17 @@ export default class Platform {
         this.isNew = false;
       }
 
-      // Calculate animation progress (0 to 1)
+      // progress (0 to 1)
       const progress = this.animationProgress / this.animationDuration;
 
-      // Apply animation effects
+      // animation effects
 
       const initialX = this.position.x + 500;
       const currentX = initialX + (this.position.x - initialX) * progress;
 
-      // Save context state
       ctx.save();
 
-      // Apply transformations
+      //  transformations
       ctx.translate(this.position.x + this.width / 2, this.position.y);
       ctx.translate(-(this.position.x + this.width / 2), -this.position.y);
 
@@ -67,7 +66,7 @@ export default class Platform {
       ctx.fillStyle = this.color;
       ctx.fillRect(currentX, this.position.y, this.width, this.height);
 
-      // Draw middle point if it exists
+      // Draw middle point
       if (this.middlePoint && this.middlePoint.x) {
         ctx.fillStyle = "red";
         ctx.fillRect(
@@ -79,10 +78,9 @@ export default class Platform {
         );
       }
 
-      // Restore context state
       ctx.restore();
     } else {
-      // Draw normal platform without animation
+      // Draw normal platform
       ctx.fillStyle = this.color;
       ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
 
@@ -106,7 +104,7 @@ export function initPlatforms() {
   platforms.length = 0;
   let startPosX = 200; // Starting X position
 
-  const firstPlatform = new Platform(startPosX, canvas, 150);
+  const firstPlatform = new Platform(startPosX, canvas, 130);
   platforms.push(firstPlatform);
 
   const secondPosition = firstPlatform.rightEdge + platformConfig.minGap;

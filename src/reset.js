@@ -1,6 +1,6 @@
 import { canvas, initCanvases, holdText } from "./main.js";
 
-import { initHero } from "./Hero.js";
+import { initHero, score } from "./Hero.js";
 import { initPlatforms } from "./platform.js";
 import { clearSticks } from "./stick.js";
 /* import Stick from "./stick.js"; */
@@ -26,14 +26,30 @@ export function play(ctx) {
   /// the play button
   ctx.fillStyle = "red";
   ctx.beginPath();
-  ctx.arc(canvas.width / 2, canvas.height / 3, 110, 0, 2 * Math.PI);
+  ctx.arc(canvas.width / 2, canvas.height / 2, 140, 0, 2 * Math.PI);
 
   ctx.fill();
 
   ctx.fillStyle = "white";
   ctx.font = "40px Helvetica";
   ctx.textAlign = "center";
-  ctx.fillText("RESTART", canvas.width / 2, canvas.height / 3 + 20);
+  ctx.fillText("RESTART", canvas.width / 2, canvas.height / 2);
+  ctx.fillStyle = "white";
+  ctx.font = "30px Helvetica";
+
+  /// draw score
+  ctx.fillStyle = "red";
+  ctx.beginPath();
+  ctx.arc(canvas.width / 2, canvas.height / 4 + 30, 100, 0, 2 * Math.PI);
+  ctx.fill();
+
+  ctx.fillStyle = "white";
+  ctx.font = "26px Helvetica";
+  ctx.textAlign = "center";
+  ctx.fillText("FINAL SCORE", canvas.width / 2, canvas.height / 4 + 40);
+  ctx.fillStyle = "black";
+  ctx.font = "50px Helvetica";
+  ctx.fillText(`${score}`, canvas.width / 2, canvas.height / 4 + 100);
 
   ctx.restore();
 }

@@ -15,20 +15,42 @@ ctx.imageSmoothingEnabled = false;
 
 export const camera = {
   x: 0,
-  speed: 2,
-  following: true, // Whether camera is actively following the player
+  speed: 1,
+  following: true, // camera is actively following the player
   margin: 700,
 };
 
 // dont forget... drawBackground at the top to be accessible always man..
-function drawBackground() {
-  let gradient = bgCtx.createLinearGradient(0, 0, 0, bgCanvas.height);
+/*function drawBackground() {
+   let gradient = bgCtx.createLinearGradient(0, 0, 0, bgCanvas.height);
   gradient.addColorStop(0, "#87ceeb");
   gradient.addColorStop(1, "#ffffff");
 
   bgCtx.fillStyle = gradient;
-  bgCtx.fillRect(0, 0, bgCanvas.width, bgCanvas.height);
+  bgCtx.fillRect(0, 0, bgCanvas.width, bgCanvas.height); 
+} */
+const bgImage = new Image();
+
+bgImage.src = "../assets/background/sky-layer.svg";
+
+const parallaxFactor = 0.8;
+function gameUpdate() {
+  bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+
+  const bgX = -(camera.x * parallaxFactor) % bgCanvas.width;
+
+  bgCtx.drawImage(bgImage, Math.floor(bgX), 0, bgCanvas.width, bgCanvas.height);
+  bgCtx.drawImage(
+    bgImage,
+    Math.floor(bgX + bgCanvas.width),
+    0,
+    bgCanvas.width,
+    bgCanvas.height
+  );
+
+  requestAnimationFrame(gameUpdate);
 }
+gameUpdate();
 
 // scaling
 const resizeObserver = new ResizeObserver(() => {
@@ -44,7 +66,7 @@ resizeObserver.observe(container.parentElement);
 export function initCanvases() {
   bgCanvas.width = canvas.width = container.offsetWidth;
   bgCanvas.height = canvas.height = container.offsetHeight;
-  drawBackground();
+
   holdText();
 }
 export function holdText() {
@@ -54,8 +76,8 @@ export function holdText() {
 }
 
 export const sticks = [];
+///////////////////////////////////////////////////////////////
 async function main() {
-  ///////////////////////////////////////////////////////////////
   const firstStick = new Stick(platforms[platforms.length - 1]);
   window.addEventListener("mousedown", (event) => {
     if (platforms.length >= 2 && !isWalking) {
@@ -83,8 +105,8 @@ async function main() {
 
     //  click is within the play button circle
     const centerX = canvas.width / 2;
-    const centerY = canvas.height / 3;
-    const radius = 110;
+    const centerY = canvas.height / 2;
+    const radius = 140;
 
     console.log(`x`, clickX);
     console.log(`y`, clickY);
@@ -92,7 +114,6 @@ async function main() {
     const distance = Math.sqrt(
       Math.pow(clickX - centerX, 2) + Math.pow(clickY - centerY, 2)
     );
-    console.log(`distance`, distance);
 
     if (distance <= radius && sticks.length === 0) {
       console.log("Play button clicked!");
@@ -108,14 +129,22 @@ async function main() {
 
     // Smoothly move camera toward target position
     if (camera.following) {
-      camera.x += (targetX - camera.x) * 0.05; // Smooth follow effect
+      camera.x += (targetX - camera.x) * 0.05;
     }
   }
 
   ///////////////////////////////////////////////////////////////
+
+  /*   const bgImage = new Image();
+  bgImage.src = "../assets/background/parallax-mountain-bg.png";
+
+  let bgX = 0;
+  const bgSpeed = 1; */
+
   function draw() {
     // Clear only game canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    /*  drawBackground(); */
 
     ctx.save();
     ctx.translate(-camera.x, 0);
@@ -136,6 +165,11 @@ async function main() {
 
     // Update camera position
     updateCamera();
+
+    /*  if (isWalking) {
+      bgX -= bgSpeed;
+      if (bgX <= -canvas.width) bgX = 0;
+    } */
   }
 
   // Initialize and draw background
