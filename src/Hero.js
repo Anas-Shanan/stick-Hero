@@ -6,19 +6,19 @@ import { animateDoubleScore } from "./stick.js";
 
 // Constants
 const spriteSheet = new Image();
-spriteSheet.src = "../assets/imgs/spritesheet6.png";
+spriteSheet.src = "../assets/spritesheet/Hero-spritesheet8-55*55.png";
 
 // Hero State
 export let heroX = 200;
 
-let yCanvas = 722;
+let yCanvas = 706;
 let totalFrames = 0;
 let currentFrame = 0;
 
-const frameWidth = 64;
-const frameHeight = 64;
+const frameWidth = 55;
+const frameHeight = 55;
 const walkSpeed = 6;
-const fallSpeed = 15;
+const fallSpeed = 10;
 
 export let isWalking = false;
 let isFalling = false;
@@ -154,10 +154,7 @@ export function destination(sticks) {
     stickEndX <= nextPlatform.middlePoint.x + nextPlatform.middlePoint.width + 3
   ) {
     console.log(`middlepoint.x`, nextPlatform.middlePoint.x);
-    console.log(
-      `middlepoint.width`,
-      nextPlatform.middlePoint.x + nextPlatform.middlePoint.width
-    );
+
     doubleScore = true;
   }
 
@@ -191,7 +188,7 @@ export function animateHero(ctx) {
 
 export function initHero() {
   heroX = 200;
-  yCanvas = 725;
+  yCanvas = 706;
   currentFrame = 0;
   totalFrames = 0;
   hasLandedSafely = false;

@@ -99,13 +99,44 @@ html {
 
 #hold {
   position: absolute;
-  top: 200px;
+  top: 300px;
   left: 50%;
   transform: translateX(-50%);
   font-size: 30px;
   font-weight: bold;
   color: #2c2b2b;
   text-shadow: 1px 1px 1px rgba(17, 17, 17, 0.9);
+  opacity: 0; /* Start invisible */
+  z-index: 100;
+}
+
+#hold1 {
+  font-family: Helvetica, sans-serif;
+  position: absolute;
+  top: -120px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 140px;
+  text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #63dcfa,
+    0 0 30px #6ddffc;
+
+  color: #ffffff;
+
+  opacity: 0; /* Start invisible */
+  z-index: 100;
+}
+#hold2 {
+  font-family: Arial, Helvetica, sans-serif;
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 140px;
+  text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #63dcfa,
+    0 0 30px #6ddffc;
+
+  color: #ffffff;
+
   opacity: 0; /* Start invisible */
   z-index: 100;
 }

@@ -1,8 +1,8 @@
 import { sticks, camera } from "./main.js";
 
 const stickConfig = {
-  width: 5,
-  growSpeed: 7,
+  width: 4,
+  growSpeed: 10,
   color: "black",
   rotationSpeed: 1,
 };
@@ -22,7 +22,7 @@ export default class Stick {
     this.isRotating = false;
     this.currentRotation = 0;
     this.targetRotation = Math.PI / 2;
-    this.rotationSpeed = 0.03;
+    this.rotationSpeed = 0.01;
   }
   //////////////////////// functions //////////////////////////////////////
 
@@ -61,20 +61,14 @@ export default class Stick {
       }
       ctx.save();
 
-      ctx.translate(this.position.x, this.position.y + this.height);
+      ctx.translate(
+        this.position.x,
+        this.position.y + this.height - stickConfig.width
+      );
       ctx.rotate(this.currentRotation);
       ctx.fillStyle = stickConfig.color;
       ctx.fillRect(0, -this.height, stickConfig.width, this.height);
       ctx.restore();
-    } else if (!this.isPressing) {
-      // Just do a normal non-animated rotation (your original code)
-      ctx.save();
-      ctx.translate(this.position.x, this.position.y);
-      ctx.rotate(Math.PI / 2);
-      ctx.fillStyle = stickConfig.color;
-      ctx.fillRect(0, -this.height, stickConfig.width, this.height);
-      ctx.restore();
-      this.collision = true;
     }
 
     return this.collision;
@@ -97,11 +91,12 @@ export function animateDoubleScore(heroX) {
   doubleScoreText.textContent = "PERFECT! +2";
   doubleScoreText.style.position = "absolute";
   const screenX = heroX - camera.x;
+  const screenY = 550;
   console.log(`heroX: ${heroX}, Camera X: ${camera.x}, Screen X: ${screenX}`);
 
-  doubleScoreText.style.left = `${screenX - 150}px`;
+  doubleScoreText.style.left = `${screenX}px`;
 
-  doubleScoreText.style.top = `${450}px`;
+  doubleScoreText.style.top = `${screenY}px`;
   doubleScoreText.style.color = "gold";
   doubleScoreText.style.fontFamily = "Helvetica";
   doubleScoreText.style.fontWeight = "bold";

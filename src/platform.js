@@ -3,9 +3,9 @@
 const platformConfig = {
   minGap: 40, // Minimum gap between platforms
   maxGap: 420, // Maximum gap between platforms
-  height: 300,
-  MIN_WIDTH: 62,
-  MAX_WIDTH: 130,
+  height: 325,
+  MIN_WIDTH: 56,
+  MAX_WIDTH: 110,
   color: "black",
 };
 

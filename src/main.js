@@ -9,6 +9,8 @@ const bgCanvas = document.getElementById("bgCanvas");
 export const canvas = document.getElementById("gameCanvas");
 export const scoreElement = document.getElementById("score");
 const holdElement = document.getElementById("hold");
+const holdElement1 = document.getElementById("hold1");
+const holdElement2 = document.getElementById("hold2");
 const bgCtx = bgCanvas.getContext("2d");
 export const ctx = canvas.getContext("2d");
 ctx.imageSmoothingEnabled = false;
@@ -21,17 +23,24 @@ export const camera = {
 };
 
 // dont forget... drawBackground at the top to be accessible always man..
-/*function drawBackground() {
-   let gradient = bgCtx.createLinearGradient(0, 0, 0, bgCanvas.height);
-  gradient.addColorStop(0, "#87ceeb");
-  gradient.addColorStop(1, "#ffffff");
+/* function drawBackground() {
+  let gradient = bgCtx.createLinearGradient(0, 0, 0, bgCanvas.height);
+  gradient.addColorStop(0, "#3B9A9C");
+  gradient.addColorStop(1, "#65C3C8");
 
   bgCtx.fillStyle = gradient;
-  bgCtx.fillRect(0, 0, bgCanvas.width, bgCanvas.height); 
+  bgCtx.fillRect(0, 0, bgCanvas.width, bgCanvas.height);
+
+  ctx.fillStyle = "white";
+  ctx.font = "150px bold Helvetica";
+  ctx.textAlign = "center";
 } */
+
+////////////////////////// animated background  //////////////7
+
 const bgImage = new Image();
 
-bgImage.src = "../assets/background/sky-layer.svg";
+bgImage.src = "../assets/background/background.png";
 
 const parallaxFactor = 0.8;
 function gameUpdate() {
@@ -73,13 +82,27 @@ export function holdText() {
   holdElement.classList.remove("hold-animated");
   void holdElement.offsetWidth;
   holdElement.classList.add("hold-animated");
+
+  holdElement1.classList.remove("hold-animated");
+  void holdElement1.offsetWidth;
+  holdElement1.classList.add("hold-animated");
+  holdElement2.classList.remove("hold-animated");
+  void holdElement2.offsetWidth;
+  holdElement2.classList.add("hold-animated");
+
+  ctx.fillStyle = "white";
+  ctx.font = "150px bold Helvetica";
+  ctx.textAlign = "center";
+
+  ctx.fillText("STICK", canvas.width / 2, canvas.height * 0.15);
+  ctx.fillText("HERO", canvas.width / 2 + 10, canvas.height * 0.27);
 }
 
 export const sticks = [];
 ///////////////////////////////////////////////////////////////
 async function main() {
   const firstStick = new Stick(platforms[platforms.length - 1]);
-  window.addEventListener("mousedown", (event) => {
+  window.addEventListener("mousedown", () => {
     if (platforms.length >= 2 && !isWalking) {
       sticks.push(new Stick(platforms[platforms.length - 2]));
       let lastStick = sticks[sticks.length - 1];
@@ -87,7 +110,7 @@ async function main() {
     }
   });
 
-  window.addEventListener("mouseup", (event) => {
+  window.addEventListener("mouseup", () => {
     if (sticks.length > 0 && !isWalking) {
       let lastStick = sticks[sticks.length - 1];
       lastStick.isPressing = false;
@@ -106,7 +129,7 @@ async function main() {
     //  click is within the play button circle
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
-    const radius = 140;
+    const radius = 110;
 
     console.log(`x`, clickX);
     console.log(`y`, clickY);
@@ -127,7 +150,7 @@ async function main() {
     /// targetX is the target position of the hero
     const targetX = Math.max(0, heroX - (canvas.width - camera.margin));
 
-    // Smoothly move camera toward target position
+    //  camera speed toward target position
     if (camera.following) {
       camera.x += (targetX - camera.x) * 0.05;
     }
@@ -144,7 +167,7 @@ async function main() {
   function draw() {
     // Clear only game canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    /*  drawBackground(); */
+    /* drawBackground(); */
 
     ctx.save();
     ctx.translate(-camera.x, 0);
