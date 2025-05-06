@@ -60,6 +60,7 @@ function gameUpdate() {
   requestAnimationFrame(gameUpdate);
 }
 gameUpdate();
+//////////////////////////  /////////////////////////////7
 
 // scaling
 const resizeObserver = new ResizeObserver(() => {
@@ -89,13 +90,6 @@ export function holdText() {
   holdElement2.classList.remove("hold-animated");
   void holdElement2.offsetWidth;
   holdElement2.classList.add("hold-animated");
-
-  ctx.fillStyle = "white";
-  ctx.font = "150px bold Helvetica";
-  ctx.textAlign = "center";
-
-  ctx.fillText("STICK", canvas.width / 2, canvas.height * 0.15);
-  ctx.fillText("HERO", canvas.width / 2 + 10, canvas.height * 0.27);
 }
 
 export const sticks = [];
@@ -158,12 +152,6 @@ async function main() {
 
   ///////////////////////////////////////////////////////////////
 
-  /*   const bgImage = new Image();
-  bgImage.src = "../assets/background/parallax-mountain-bg.png";
-
-  let bgX = 0;
-  const bgSpeed = 1; */
-
   function draw() {
     // Clear only game canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -188,11 +176,6 @@ async function main() {
 
     // Update camera position
     updateCamera();
-
-    /*  if (isWalking) {
-      bgX -= bgSpeed;
-      if (bgX <= -canvas.width) bgX = 0;
-    } */
   }
 
   // Initialize and draw background

@@ -11,6 +11,7 @@ html {
   margin: 0;
   padding: 0;
   overflow: hidden;
+  font-family: "Trebuchet MS", "Verdana", sans-serif;
 }
 
 .container {
@@ -39,14 +40,14 @@ html {
 
 #gameCanvas {
   z-index: 1;
-  border: 5px solid black;
+  border: 2px solid black;
 }
 
 #score {
   width: 80px;
   height: 40px;
   font-size: 30px;
-  font-family: Arial, Helvetica, sans-serif;
+
   font-weight: 700;
   border-radius: 15px;
   padding-top: 8px;
@@ -111,7 +112,6 @@ html {
 }
 
 #hold1 {
-  font-family: Helvetica, sans-serif;
   position: absolute;
   top: -120px;
   left: 50%;
@@ -119,14 +119,11 @@ html {
   font-size: 140px;
   text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #63dcfa,
     0 0 30px #6ddffc;
-
   color: #ffffff;
-
   opacity: 0; /* Start invisible */
   z-index: 100;
 }
 #hold2 {
-  font-family: Arial, Helvetica, sans-serif;
   position: absolute;
   top: 20px;
   left: 50%;
@@ -134,9 +131,7 @@ html {
   font-size: 140px;
   text-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 20px #63dcfa,
     0 0 30px #6ddffc;
-
   color: #ffffff;
-
   opacity: 0; /* Start invisible */
   z-index: 100;
 }

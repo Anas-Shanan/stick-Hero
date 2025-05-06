@@ -162,7 +162,7 @@ export function destination(sticks) {
 
   if (
     stickEndX >= nextPlatform.position.x &&
-    stickEndX <= nextPlatform.rightEdge
+    stickEndX <= nextPlatform.rightEdge + 2
   ) {
     // Correct landing
     startWalking(nextPlatform.rightEdge - frameWidth);

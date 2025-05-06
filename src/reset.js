@@ -25,8 +25,11 @@ export function play(ctx) {
   // Reset any transformations to draw in screen coordinates
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.fillStyle = "white";
-  ctx.fillText("STICK", canvas.width / 2, canvas.height * 0.15);
-  ctx.fillText("HERO", canvas.width / 2 + 10, canvas.height * 0.27);
+  ctx.fontWeight = "bold";
+  ctx.font = "140px Verdana, Trebuchet MS, sans-serif";
+
+  ctx.fillText("STICK", canvas.width / 2 - 210, canvas.height * 0.15);
+  ctx.fillText("HERO", canvas.width / 2 - 210, canvas.height * 0.27);
 
   /// the play button
   ctx.fillStyle = "red";
@@ -36,9 +39,8 @@ export function play(ctx) {
   ctx.fill();
 
   ctx.fillStyle = "white";
-  ctx.font = "40px Helvetica";
+  ctx.fontWeight = "bold";
+  ctx.font = "40px Verdana, Trebuchet MS, sans-serif";
   ctx.textAlign = "center";
   ctx.fillText("RESTART", canvas.width / 2, canvas.height / 2 + 15);
-  ctx.fillStyle = "white";
-  ctx.font = "30px Helvetica";
 }
