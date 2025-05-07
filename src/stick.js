@@ -7,6 +7,9 @@ const stickConfig = {
   rotationSpeed: 1,
 };
 
+const stickGrow = new Audio("../assets/sound/stick_grow_loop.wav");
+const stickCollision = new Audio("../assets/sound/stickCollision.wav");
+
 export default class Stick {
   constructor(platform) {
     this.platform = platform;
@@ -29,6 +32,12 @@ export default class Stick {
   resetCollision() {
     this.collision = false;
   }
+  /*  stickGrowSound() {
+    stickGrow.loop = true;
+    stickGrow.currentTime = 2;
+    stickGrow.playbackRate = 1;
+    stickGrow.play();
+  } */
 
   drawStick(ctx) {
     ctx.fillStyle = stickConfig.color;
@@ -43,6 +52,9 @@ export default class Stick {
   rotateStick(ctx) {
     if (!this.isPressing && !this.isRotating) {
       this.isRotating = true;
+
+      stickGrow.loop = false;
+      stickGrow.pause();
     }
     if (this.isRotating) {
       ctx.clearRect(
@@ -57,6 +69,7 @@ export default class Stick {
         if (this.currentRotation >= this.targetRotation) {
           this.currentRotation = this.targetRotation;
           this.collision = true;
+          stickCollision.play();
         }
       }
       ctx.save();
@@ -79,6 +92,7 @@ export default class Stick {
       this.height += 1 * stickConfig.growSpeed;
       this.position.y -= 1 * stickConfig.growSpeed;
       this.drawStick(ctx);
+      /* this.stickGrowSound(); */
     }
   }
 }
@@ -109,23 +123,3 @@ export function animateDoubleScore(heroX) {
     document.body.removeChild(doubleScoreText);
   }, 3000);
 }
-/* export function anim(heroX) {
-  const anim = document.createElement("div");
-  anim.textContent = "Stick Hero";
-  anim.style.position = "absolute";
-
-  anim.style.left = `${500}px`;
-
-  anim.style.top = `${120}px`;
-  anim.style.color = "black";
-  anim.style.fontFamily = "Helvetica";
-  anim.style.fontWeight = "300";
-  anim.style.fontSize = "100px";
-  anim.style.textShadow = "2px 2px 10px rgba(136, 13, 13, 0.5)";
-  anim.style.animation = "slideIn 5s forwards";
-  console.log(anim.style);
-  document.body.appendChild(anim);
-  setTimeout(() => {
-    document.body.removeChild(anim);
-  }, 3000);
-} */

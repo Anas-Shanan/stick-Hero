@@ -59,8 +59,8 @@ export default class Platform {
       ctx.save();
 
       //  transformations
-      ctx.translate(this.position.x + this.width / 2, this.position.y);
-      ctx.translate(-(this.position.x + this.width / 2), -this.position.y);
+      /*  ctx.translate(this.position.x + this.width / 2, this.position.y);
+      ctx.translate(-(this.position.x + this.width / 2), -this.position.y); */
 
       // Draw the animated platform
       ctx.fillStyle = this.color;

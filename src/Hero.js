@@ -30,10 +30,14 @@ let doubleScore = false;
 
 // ====== Internal Functions
 
+export const scoreSound = new Audio("../assets/sound/score.mp3");
+export const fallSound = new Audio("../assets/sound/dead.wav");
+
 function updateScore() {
   console.log(`hero`, heroX);
   if (doubleScore) {
     score += 2;
+    scoreSound.play();
 
     animateDoubleScore(heroX);
   } else {
@@ -53,11 +57,20 @@ function updateScore() {
     scoreElement.textContent = score;
   }
 } */
-
+let fallSoundPlayed = false;
 function fall() {
   yCanvas += fallSpeed;
+
+  if (!fallSoundPlayed) {
+    fallSound.play();
+    fallSoundPlayed = true;
+  }
+
   if (yCanvas >= canvas.height) {
     sticks.length = 0;
+    fallSound.pause();
+    fallSound.currentTime = 0;
+    fallSoundPlayed = false;
     play(ctx); // Restart the game after falling
   }
 }
